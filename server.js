@@ -24,15 +24,20 @@ async function connectDB() {
 
 connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello from Express in Docker!');
-});
 
 
 // Message model
 const Message = mongoose.model('Message', new mongoose.Schema({
   text: String,
 }));
+
+
+app.get('/', async (req, res) => {
+  const messages = await Message.find({});
+  res.json(messages)
+});
+
+
 
 app.get('/message', async (req, res) => {
   const { message } = req.query;
