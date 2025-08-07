@@ -12,7 +12,7 @@ async function connectDB() {
     console.error('MONGO_URL and DB_NAME environment variables are required');
     process.exit(1);
   }
-  
+
   try {
     await mongoose.connect(mongoUrl, { dbName });
     console.log('Database is connected');
@@ -27,6 +27,26 @@ connectDB();
 app.get('/', (req, res) => {
   res.send('Hello from Express!');
 });
+
+
+// Message model
+const Message = mongoose.model('Message', new mongoose.Schema({
+  text: String,
+}));
+
+app.get('/message', async (req, res) => {
+  const { message } = req.query;
+  if (!message) {
+    return res.status(400).send('Query parameter "message" is required');
+  }
+  try {
+    const saved = await Message.create({ text: message });
+    res.send(`Message stored: ${saved.text}`);
+  } catch (err) {
+    res.status(500).send('Error storing message');
+  }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
