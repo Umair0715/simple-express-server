@@ -25,7 +25,7 @@ async function connectDB() {
 connectDB();
 
 app.get('/', (req, res) => {
-  res.send('Hello from Express!');
+  res.send('Hello from Express in Docker!');
 });
 
 
