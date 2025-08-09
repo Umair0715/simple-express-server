@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes: 
+      - mongo-data:/data/db
+    networks:
+      - express-network
+    restart: always 
+
+  express:
+    build:
+      context: .
+    image: express
+    container_name: express 
+    environment:
+      - DB_URL=mongodb://mongo:27017
+      - DB_NAME=test
+    ports:
+      - "3000:3000"
+    networks:
+      - express-network
+    depends_on:
+      - mongo
+    restart: always
+
+volumes:
+  mongo-data:
+networks:
+  express-network:
