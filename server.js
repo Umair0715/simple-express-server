@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 
-// CONNECT DB
+// CONNECT Database
 async function connectDB() {
   const mongoUrl = process.env.DB_URL;
   const dbName = process.env.DB_NAME;
